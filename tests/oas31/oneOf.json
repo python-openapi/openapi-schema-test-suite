@@ -1,0 +1,145 @@
+[
+    {
+        "description": "oneOf",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "oneOf": [
+                { "type": "integer" },
+                { "minimum": 2 }
+            ]
+        },
+        "tests": [
+            {
+                "description": "an integer less than 2 matches first subschema only",
+                "data": 1,
+                "valid": true
+            },
+            {
+                "description": "a float greater than 2 matches second subschema only",
+                "data": 2.5,
+                "valid": true
+            },
+            {
+                "description": "an integer greater than 2 matches both subschemas and is not valid",
+                "data": 3,
+                "valid": false
+            },
+            {
+                "description": "a float less than 2 matches neither subschema",
+                "data": 1.5,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "oneOf with mutually exclusive types",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "oneOf": [
+                { "type": "string" },
+                { "type": "integer" }
+            ]
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "an integer is valid",
+                "data": 1,
+                "valid": true
+            },
+            {
+                "description": "a float is not valid",
+                "data": 1.5,
+                "valid": false
+            },
+            {
+                "description": "null is not valid",
+                "data": null,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "oneOf with base schema",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "oneOf": [
+                { "minLength": 2 },
+                { "maxLength": 4 }
+            ]
+        },
+        "tests": [
+            {
+                "description": "short string matching only maxLength is valid",
+                "data": "a",
+                "valid": true
+            },
+            {
+                "description": "long string matching only minLength is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "string of length 2-4 matches both and is not valid",
+                "data": "foo",
+                "valid": false
+            },
+            {
+                "description": "integer is not valid (fails base schema)",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "oneOf with discriminator-like pattern",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": { "const": "cat" },
+                        "meow": { "type": "string" }
+                    },
+                    "required": ["type", "meow"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": { "const": "dog" },
+                        "bark": { "type": "string" }
+                    },
+                    "required": ["type", "bark"]
+                }
+            ]
+        },
+        "tests": [
+            {
+                "description": "cat schema is valid",
+                "data": {"type": "cat", "meow": "purr"},
+                "valid": true
+            },
+            {
+                "description": "dog schema is valid",
+                "data": {"type": "dog", "bark": "woof"},
+                "valid": true
+            },
+            {
+                "description": "unknown type is not valid",
+                "data": {"type": "bird", "chirp": "tweet"},
+                "valid": false
+            },
+            {
+                "description": "missing required field is not valid",
+                "data": {"type": "cat"},
+                "valid": false
+            }
+        ]
+    }
+]

@@ -1,0 +1,187 @@
+[
+    {
+        "description": "unevaluatedProperties",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "object",
+            "properties": {
+                "foo": { "type": "string" }
+            },
+            "unevaluatedProperties": false
+        },
+        "tests": [
+            {
+                "description": "object with only evaluated property is valid",
+                "data": {"foo": "bar"},
+                "valid": true
+            },
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            },
+            {
+                "description": "object with unevaluated property is not valid",
+                "data": {"foo": "bar", "extra": "value"},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "unevaluatedProperties with allOf",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "object",
+            "allOf": [
+                {
+                    "properties": {
+                        "foo": { "type": "string" }
+                    }
+                },
+                {
+                    "properties": {
+                        "bar": { "type": "integer" }
+                    }
+                }
+            ],
+            "unevaluatedProperties": false
+        },
+        "tests": [
+            {
+                "description": "object with only allOf-evaluated properties is valid",
+                "data": {"foo": "hello", "bar": 42},
+                "valid": true
+            },
+            {
+                "description": "object with one allOf-evaluated property is valid",
+                "data": {"foo": "hello"},
+                "valid": true
+            },
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            },
+            {
+                "description": "object with unevaluated property is not valid",
+                "data": {"foo": "hello", "baz": "extra"},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "unevaluatedProperties with schema",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "object",
+            "properties": {
+                "foo": { "type": "string" }
+            },
+            "unevaluatedProperties": { "type": "integer" }
+        },
+        "tests": [
+            {
+                "description": "unevaluated integer property is valid",
+                "data": {"foo": "bar", "extra": 42},
+                "valid": true
+            },
+            {
+                "description": "unevaluated string property is not valid",
+                "data": {"foo": "bar", "extra": "not-integer"},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "unevaluatedItems",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "array",
+            "prefixItems": [
+                { "type": "string" }
+            ],
+            "unevaluatedItems": false
+        },
+        "tests": [
+            {
+                "description": "array with only prefix item is valid",
+                "data": ["foo"],
+                "valid": true
+            },
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "array with unevaluated item is not valid",
+                "data": ["foo", 42],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "unevaluatedItems with schema",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "array",
+            "prefixItems": [
+                { "type": "string" }
+            ],
+            "unevaluatedItems": { "type": "integer" }
+        },
+        "tests": [
+            {
+                "description": "array with integer unevaluated item is valid",
+                "data": ["foo", 42],
+                "valid": true
+            },
+            {
+                "description": "array with string unevaluated item is not valid",
+                "data": ["foo", "bar"],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "unevaluatedProperties with if/then/else",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "object",
+            "if": {
+                "properties": {
+                    "type": { "const": "premium" }
+                },
+                "required": ["type"]
+            },
+            "then": {
+                "properties": {
+                    "maxCount": { "type": "integer" }
+                }
+            },
+            "else": {
+                "properties": {
+                    "name": { "type": "string" }
+                }
+            },
+            "unevaluatedProperties": false
+        },
+        "tests": [
+            {
+                "description": "premium type with maxCount is valid",
+                "data": {"type": "premium", "maxCount": 10},
+                "valid": true
+            },
+            {
+                "description": "non-premium type with name is valid",
+                "data": {"type": "basic", "name": "Alice"},
+                "valid": true
+            },
+            {
+                "description": "premium type with extra property is not valid",
+                "data": {"type": "premium", "maxCount": 10, "extra": "value"},
+                "valid": false
+            }
+        ]
+    }
+]

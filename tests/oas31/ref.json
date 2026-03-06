@@ -1,0 +1,186 @@
+[
+    {
+        "description": "$ref to $defs",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "$defs": {
+                "MyString": { "type": "string" }
+            },
+            "$ref": "#/$defs/MyString"
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "property using $ref",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "$defs": {
+                "Address": {
+                    "type": "object",
+                    "properties": {
+                        "street": { "type": "string" },
+                        "city": { "type": "string" }
+                    },
+                    "required": ["street", "city"]
+                }
+            },
+            "type": "object",
+            "properties": {
+                "name": { "type": "string" },
+                "address": { "$ref": "#/$defs/Address" }
+            },
+            "required": ["name"]
+        },
+        "tests": [
+            {
+                "description": "valid object with ref property",
+                "data": {"name": "Alice", "address": {"street": "123 Main St", "city": "Springfield"}},
+                "valid": true
+            },
+            {
+                "description": "valid object without optional ref property",
+                "data": {"name": "Alice"},
+                "valid": true
+            },
+            {
+                "description": "invalid ref property is not valid",
+                "data": {"name": "Alice", "address": {"street": "123 Main St"}},
+                "valid": false
+            },
+            {
+                "description": "wrong type for ref property is not valid",
+                "data": {"name": "Alice", "address": "not-an-object"},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "recursive $ref using $defs",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "$defs": {
+                "Node": {
+                    "type": "object",
+                    "properties": {
+                        "value": { "type": "integer" },
+                        "children": {
+                            "type": "array",
+                            "items": { "$ref": "#/$defs/Node" }
+                        }
+                    },
+                    "required": ["value"]
+                }
+            },
+            "$ref": "#/$defs/Node"
+        },
+        "tests": [
+            {
+                "description": "simple node is valid",
+                "data": {"value": 1},
+                "valid": true
+            },
+            {
+                "description": "node with children is valid",
+                "data": {"value": 1, "children": [{"value": 2}, {"value": 3}]},
+                "valid": true
+            },
+            {
+                "description": "nested children are valid",
+                "data": {"value": 1, "children": [{"value": 2, "children": [{"value": 3}]}]},
+                "valid": true
+            },
+            {
+                "description": "node missing required value is not valid",
+                "data": {"children": []},
+                "valid": false
+            },
+            {
+                "description": "child node missing required value is not valid",
+                "data": {"value": 1, "children": [{"name": "no-value"}]},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "$ref in allOf",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "$defs": {
+                "BaseObject": {
+                    "type": "object",
+                    "properties": {
+                        "id": { "type": "integer" }
+                    },
+                    "required": ["id"]
+                }
+            },
+            "allOf": [
+                { "$ref": "#/$defs/BaseObject" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "name": { "type": "string" }
+                    },
+                    "required": ["name"]
+                }
+            ]
+        },
+        "tests": [
+            {
+                "description": "object with both id and name is valid",
+                "data": {"id": 1, "name": "Alice"},
+                "valid": true
+            },
+            {
+                "description": "object without id is not valid",
+                "data": {"name": "Alice"},
+                "valid": false
+            },
+            {
+                "description": "object without name is not valid",
+                "data": {"id": 1},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "$ref sibling keywords are evaluated",
+        "comment": "In JSON Schema 2020-12, $ref no longer precludes sibling keywords",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "$defs": {
+                "StringType": { "type": "string" }
+            },
+            "$ref": "#/$defs/StringType",
+            "minLength": 3
+        },
+        "tests": [
+            {
+                "description": "a string with sufficient length is valid",
+                "data": "foobar",
+                "valid": true
+            },
+            {
+                "description": "a short string is not valid",
+                "data": "ab",
+                "valid": false
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    }
+]

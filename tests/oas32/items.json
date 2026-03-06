@@ -1,0 +1,261 @@
+[
+    {
+        "description": "items validation",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "items": { "type": "integer" }
+        },
+        "tests": [
+            {
+                "description": "array of integers is valid",
+                "data": [1, 2, 3],
+                "valid": true
+            },
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "array with a string is not valid",
+                "data": [1, "foo", 3],
+                "valid": false
+            },
+            {
+                "description": "array with null is not valid",
+                "data": [1, null, 3],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "prefixItems validation",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "prefixItems": [
+                { "type": "string" },
+                { "type": "integer" }
+            ]
+        },
+        "tests": [
+            {
+                "description": "matching prefix items is valid",
+                "data": ["foo", 1],
+                "valid": true
+            },
+            {
+                "description": "additional items beyond prefix are valid",
+                "data": ["foo", 1, "extra"],
+                "valid": true
+            },
+            {
+                "description": "wrong type for first prefix item is not valid",
+                "data": [1, 1],
+                "valid": false
+            },
+            {
+                "description": "wrong type for second prefix item is not valid",
+                "data": ["foo", "bar"],
+                "valid": false
+            },
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "prefixItems with items restricts additional items",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "prefixItems": [
+                { "type": "string" },
+                { "type": "integer" }
+            ],
+            "items": false
+        },
+        "tests": [
+            {
+                "description": "matching prefix items is valid",
+                "data": ["foo", 1],
+                "valid": true
+            },
+            {
+                "description": "only first prefix item is valid",
+                "data": ["foo"],
+                "valid": true
+            },
+            {
+                "description": "additional item beyond prefix is not valid",
+                "data": ["foo", 1, "extra"],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minItems",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "minItems": 2
+        },
+        "tests": [
+            {
+                "description": "array with 2 items is valid",
+                "data": [1, 2],
+                "valid": true
+            },
+            {
+                "description": "array with 3 items is valid",
+                "data": [1, 2, 3],
+                "valid": true
+            },
+            {
+                "description": "array with 1 item is not valid",
+                "data": [1],
+                "valid": false
+            },
+            {
+                "description": "empty array is not valid",
+                "data": [],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "maxItems",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "maxItems": 2
+        },
+        "tests": [
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "array with 1 item is valid",
+                "data": [1],
+                "valid": true
+            },
+            {
+                "description": "array with 2 items is valid",
+                "data": [1, 2],
+                "valid": true
+            },
+            {
+                "description": "array with 3 items is not valid",
+                "data": [1, 2, 3],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "uniqueItems",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "uniqueItems": true
+        },
+        "tests": [
+            {
+                "description": "array with unique items is valid",
+                "data": [1, 2, 3],
+                "valid": true
+            },
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "array with duplicate items is not valid",
+                "data": [1, 2, 1],
+                "valid": false
+            },
+            {
+                "description": "array with duplicate strings is not valid",
+                "data": ["foo", "bar", "foo"],
+                "valid": false
+            },
+            {
+                "description": "array with duplicate objects is not valid",
+                "data": [{"a": 1}, {"a": 1}],
+                "valid": false
+            },
+            {
+                "description": "array with non-duplicate objects is valid",
+                "data": [{"a": 1}, {"a": 2}],
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "contains",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "contains": { "type": "integer" }
+        },
+        "tests": [
+            {
+                "description": "array containing an integer is valid",
+                "data": ["foo", 1, "bar"],
+                "valid": true
+            },
+            {
+                "description": "array with only integers is valid",
+                "data": [1, 2, 3],
+                "valid": true
+            },
+            {
+                "description": "array with no integers is not valid",
+                "data": ["foo", "bar"],
+                "valid": false
+            },
+            {
+                "description": "empty array is not valid",
+                "data": [],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minContains and maxContains",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "array",
+            "contains": { "type": "integer" },
+            "minContains": 2,
+            "maxContains": 3
+        },
+        "tests": [
+            {
+                "description": "array with 2 integers is valid",
+                "data": [1, "foo", 2],
+                "valid": true
+            },
+            {
+                "description": "array with 3 integers is valid",
+                "data": [1, 2, 3, "foo"],
+                "valid": true
+            },
+            {
+                "description": "array with 1 integer is not valid",
+                "data": [1, "foo"],
+                "valid": false
+            },
+            {
+                "description": "array with 4 integers is not valid",
+                "data": [1, 2, 3, 4],
+                "valid": false
+            }
+        ]
+    }
+]
