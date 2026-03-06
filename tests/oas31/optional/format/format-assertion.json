@@ -1,0 +1,133 @@
+[
+    {
+        "description": "format email validation when assertions are enabled",
+        "comment": "These tests apply when a validator is configured to treat format as assertions, not just annotations",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "email"
+        },
+        "tests": [
+            {
+                "description": "a valid email is valid",
+                "data": "foo@example.com",
+                "valid": true
+            },
+            {
+                "description": "an invalid email is not valid",
+                "data": "not-an-email",
+                "valid": false
+            },
+            {
+                "description": "an empty string is not a valid email",
+                "data": "",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "format date-time with assertion",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "date-time"
+        },
+        "tests": [
+            {
+                "description": "a valid date-time is valid",
+                "data": "1963-06-19T08:30:06.283185307Z",
+                "valid": true
+            },
+            {
+                "description": "a valid date-time with offset is valid",
+                "data": "2023-01-01T00:00:00+05:30",
+                "valid": true
+            },
+            {
+                "description": "an invalid date-time string is not valid",
+                "data": "not-a-date-time",
+                "valid": false
+            },
+            {
+                "description": "a date without time is not a valid date-time",
+                "data": "1963-06-19",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "format date with assertion",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "date"
+        },
+        "tests": [
+            {
+                "description": "a valid date string is valid",
+                "data": "1963-06-19",
+                "valid": true
+            },
+            {
+                "description": "an invalid date string is not valid",
+                "data": "not-a-date",
+                "valid": false
+            },
+            {
+                "description": "a date-time is not a valid date",
+                "data": "1963-06-19T08:30:06Z",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "format uri with assertion",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "uri"
+        },
+        "tests": [
+            {
+                "description": "a valid URI is valid",
+                "data": "http://example.com/path?query=1#fragment",
+                "valid": true
+            },
+            {
+                "description": "a relative URI is not a valid URI",
+                "data": "//example.com",
+                "valid": false
+            },
+            {
+                "description": "an invalid URI is not valid",
+                "data": "not a uri",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "format uuid with assertion",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "uuid"
+        },
+        "tests": [
+            {
+                "description": "a valid UUID is valid",
+                "data": "2eb8aa08-aa98-11ea-b4aa-73b441d16380",
+                "valid": true
+            },
+            {
+                "description": "an uppercase UUID is valid",
+                "data": "2EB8AA08-AA98-11EA-B4AA-73B441D16380",
+                "valid": true
+            },
+            {
+                "description": "an invalid UUID is not valid",
+                "data": "not-a-uuid",
+                "valid": false
+            }
+        ]
+    }
+]

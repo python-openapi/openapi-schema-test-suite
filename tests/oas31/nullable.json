@@ -1,0 +1,240 @@
+[
+    {
+        "description": "nullable string using type array",
+        "comment": "In OAS 3.1, nullable types use a type array containing 'null', not a 'nullable' keyword",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": ["string", "null"]
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            },
+            {
+                "description": "a boolean is not valid",
+                "data": true,
+                "valid": false
+            },
+            {
+                "description": "an array is not valid",
+                "data": [],
+                "valid": false
+            },
+            {
+                "description": "an object is not valid",
+                "data": {},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "nullable integer using type array",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": ["integer", "null"]
+        },
+        "tests": [
+            {
+                "description": "an integer is valid",
+                "data": 42,
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid",
+                "data": "foo",
+                "valid": false
+            },
+            {
+                "description": "a float is not valid",
+                "data": 1.5,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "nullable number using type array",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": ["number", "null"]
+        },
+        "tests": [
+            {
+                "description": "a number is valid",
+                "data": 3.14,
+                "valid": true
+            },
+            {
+                "description": "an integer is valid as a number",
+                "data": 1,
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid",
+                "data": "foo",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "nullable object using type array",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": ["object", "null"],
+            "properties": {
+                "name": { "type": "string" }
+            }
+        },
+        "tests": [
+            {
+                "description": "an object is valid",
+                "data": {"name": "Alice"},
+                "valid": true
+            },
+            {
+                "description": "an empty object is valid",
+                "data": {},
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid",
+                "data": "foo",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "nullable array using type array",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": ["array", "null"],
+            "items": { "type": "string" }
+        },
+        "tests": [
+            {
+                "description": "an array is valid",
+                "data": ["a", "b"],
+                "valid": true
+            },
+            {
+                "description": "an empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid",
+                "data": "foo",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "non-nullable string type does not accept null",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string"
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "null is not valid",
+                "data": null,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "nullable boolean using type array",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": ["boolean", "null"]
+        },
+        "tests": [
+            {
+                "description": "true is valid",
+                "data": true,
+                "valid": true
+            },
+            {
+                "description": "false is valid",
+                "data": false,
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid",
+                "data": "foo",
+                "valid": false
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "nullable string with minLength",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": ["string", "null"],
+            "minLength": 1
+        },
+        "tests": [
+            {
+                "description": "a non-empty string is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "an empty string is not valid",
+                "data": "",
+                "valid": false
+            }
+        ]
+    }
+]

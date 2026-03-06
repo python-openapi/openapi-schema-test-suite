@@ -1,0 +1,136 @@
+[
+    {
+        "description": "not",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "not": { "type": "integer" }
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "a float is valid",
+                "data": 1.1,
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "not with required",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "not": {
+                "required": ["foo", "bar"]
+            }
+        },
+        "tests": [
+            {
+                "description": "object with only foo is valid",
+                "data": {"foo": 1},
+                "valid": true
+            },
+            {
+                "description": "object with only bar is valid",
+                "data": {"bar": 2},
+                "valid": true
+            },
+            {
+                "description": "object with both foo and bar is not valid",
+                "data": {"foo": 1, "bar": 2},
+                "valid": false
+            },
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "not with true schema always fails",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "not": true
+        },
+        "tests": [
+            {
+                "description": "any value is invalid",
+                "data": "foo",
+                "valid": false
+            },
+            {
+                "description": "null is invalid",
+                "data": null,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "not with false schema always succeeds",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "not": false
+        },
+        "tests": [
+            {
+                "description": "any value is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "not multiple types",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "not": {
+                "type": ["integer", "boolean"]
+            }
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "a float is valid",
+                "data": 1.1,
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            },
+            {
+                "description": "a boolean is not valid",
+                "data": true,
+                "valid": false
+            }
+        ]
+    }
+]

@@ -1,0 +1,130 @@
+[
+    {
+        "description": "allOf",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "allOf": [
+                { "type": "string" },
+                { "minLength": 3 }
+            ]
+        },
+        "tests": [
+            {
+                "description": "string with sufficient length is valid",
+                "data": "foobar",
+                "valid": true
+            },
+            {
+                "description": "short string is not valid",
+                "data": "ab",
+                "valid": false
+            },
+            {
+                "description": "integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "allOf with object schemas",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "allOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "name": { "type": "string" }
+                    },
+                    "required": ["name"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "age": { "type": "integer" }
+                    },
+                    "required": ["age"]
+                }
+            ]
+        },
+        "tests": [
+            {
+                "description": "object with both required properties is valid",
+                "data": {"name": "Alice", "age": 30},
+                "valid": true
+            },
+            {
+                "description": "object missing age is not valid",
+                "data": {"name": "Alice"},
+                "valid": false
+            },
+            {
+                "description": "object missing name is not valid",
+                "data": {"age": 30},
+                "valid": false
+            },
+            {
+                "description": "empty object is not valid",
+                "data": {},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "allOf with base schema",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "allOf": [
+                {
+                    "properties": {
+                        "bar": { "type": "integer" }
+                    }
+                }
+            ],
+            "properties": {
+                "foo": { "type": "string" }
+            }
+        },
+        "tests": [
+            {
+                "description": "valid with both properties",
+                "data": {"foo": "quux", "bar": 1},
+                "valid": true
+            },
+            {
+                "description": "not valid, wrong type for bar",
+                "data": {"foo": "quux", "bar": "not-integer"},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "allOf with boolean schemas",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "allOf": [true, true]
+        },
+        "tests": [
+            {
+                "description": "any value is valid when all subschemas are true",
+                "data": "foo",
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "allOf with one false schema always fails",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "allOf": [true, false]
+        },
+        "tests": [
+            {
+                "description": "any value is invalid when any subschema is false",
+                "data": "foo",
+                "valid": false
+            }
+        ]
+    }
+]

@@ -1,0 +1,206 @@
+[
+    {
+        "description": "enum validation",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "enum": ["foo", "bar"]
+        },
+        "tests": [
+            {
+                "description": "'foo' is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "'bar' is valid",
+                "data": "bar",
+                "valid": true
+            },
+            {
+                "description": "'baz' is not valid",
+                "data": "baz",
+                "valid": false
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "enum with mixed types",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "enum": [1, 2, 3, "foo", null]
+        },
+        "tests": [
+            {
+                "description": "1 is valid",
+                "data": 1,
+                "valid": true
+            },
+            {
+                "description": "'foo' is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "5 is not valid",
+                "data": 5,
+                "valid": false
+            },
+            {
+                "description": "'bar' is not valid",
+                "data": "bar",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "enum with type constraint",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "enum": ["active", "inactive", "pending"]
+        },
+        "tests": [
+            {
+                "description": "'active' is valid",
+                "data": "active",
+                "valid": true
+            },
+            {
+                "description": "'inactive' is valid",
+                "data": "inactive",
+                "valid": true
+            },
+            {
+                "description": "'pending' is valid",
+                "data": "pending",
+                "valid": true
+            },
+            {
+                "description": "'unknown' is not valid",
+                "data": "unknown",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "const validation",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "const": "foo"
+        },
+        "tests": [
+            {
+                "description": "'foo' is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "'bar' is not valid",
+                "data": "bar",
+                "valid": false
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            },
+            {
+                "description": "null is not valid",
+                "data": null,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "const with integer value",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "const": 42
+        },
+        "tests": [
+            {
+                "description": "42 is valid",
+                "data": 42,
+                "valid": true
+            },
+            {
+                "description": "42.0 is valid (same numeric value)",
+                "data": 42.0,
+                "valid": true
+            },
+            {
+                "description": "43 is not valid",
+                "data": 43,
+                "valid": false
+            },
+            {
+                "description": "a string is not valid",
+                "data": "42",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "const with null",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "const": null
+        },
+        "tests": [
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "0 is not valid",
+                "data": 0,
+                "valid": false
+            },
+            {
+                "description": "empty string is not valid",
+                "data": "",
+                "valid": false
+            },
+            {
+                "description": "false is not valid",
+                "data": false,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "const with object value",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "const": {"type": "cat"}
+        },
+        "tests": [
+            {
+                "description": "same object is valid",
+                "data": {"type": "cat"},
+                "valid": true
+            },
+            {
+                "description": "different object is not valid",
+                "data": {"type": "dog"},
+                "valid": false
+            },
+            {
+                "description": "subset object is not valid",
+                "data": {},
+                "valid": false
+            }
+        ]
+    }
+]

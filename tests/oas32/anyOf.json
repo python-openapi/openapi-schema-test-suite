@@ -1,0 +1,132 @@
+[
+    {
+        "description": "anyOf",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "anyOf": [
+                { "type": "integer" },
+                { "minimum": 2 }
+            ]
+        },
+        "tests": [
+            {
+                "description": "an integer is valid",
+                "data": 1,
+                "valid": true
+            },
+            {
+                "description": "a number greater than 2 is valid",
+                "data": 2.5,
+                "valid": true
+            },
+            {
+                "description": "an integer and greater than 2 is valid",
+                "data": 3,
+                "valid": true
+            },
+            {
+                "description": "a float less than 2 is not valid",
+                "data": 1.5,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "anyOf with string or null",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "anyOf": [
+                { "type": "string" },
+                { "type": "null" }
+            ]
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "anyOf with base schema",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "string",
+            "anyOf": [
+                { "maxLength": 2 },
+                { "minLength": 4 }
+            ]
+        },
+        "tests": [
+            {
+                "description": "short string is valid",
+                "data": "hi",
+                "valid": true
+            },
+            {
+                "description": "long string is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "string of length 3 is not valid",
+                "data": "foo",
+                "valid": false
+            },
+            {
+                "description": "integer is not valid (fails base schema)",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "anyOf with object schemas",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "anyOf": [
+                {
+                    "type": "object",
+                    "required": ["name"]
+                },
+                {
+                    "type": "object",
+                    "required": ["id"]
+                }
+            ]
+        },
+        "tests": [
+            {
+                "description": "object with name is valid",
+                "data": {"name": "Alice"},
+                "valid": true
+            },
+            {
+                "description": "object with id is valid",
+                "data": {"id": 1},
+                "valid": true
+            },
+            {
+                "description": "object with both is valid",
+                "data": {"name": "Alice", "id": 1},
+                "valid": true
+            },
+            {
+                "description": "object with neither is not valid",
+                "data": {"other": true},
+                "valid": false
+            }
+        ]
+    }
+]

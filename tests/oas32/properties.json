@@ -1,0 +1,254 @@
+[
+    {
+        "description": "properties validation",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "properties": {
+                "name": { "type": "string" },
+                "age": { "type": "integer" }
+            }
+        },
+        "tests": [
+            {
+                "description": "both properties are valid",
+                "data": {"name": "Alice", "age": 30},
+                "valid": true
+            },
+            {
+                "description": "one property is valid",
+                "data": {"name": "Alice"},
+                "valid": true
+            },
+            {
+                "description": "extra properties are valid when additionalProperties not restricted",
+                "data": {"name": "Alice", "age": 30, "extra": true},
+                "valid": true
+            },
+            {
+                "description": "wrong type for a property is not valid",
+                "data": {"name": 123},
+                "valid": false
+            },
+            {
+                "description": "wrong type for age is not valid",
+                "data": {"name": "Alice", "age": "thirty"},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "required properties",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "required": ["name", "age"],
+            "properties": {
+                "name": { "type": "string" },
+                "age": { "type": "integer" }
+            }
+        },
+        "tests": [
+            {
+                "description": "all required properties present is valid",
+                "data": {"name": "Alice", "age": 30},
+                "valid": true
+            },
+            {
+                "description": "missing required property is not valid",
+                "data": {"name": "Alice"},
+                "valid": false
+            },
+            {
+                "description": "missing both required properties is not valid",
+                "data": {},
+                "valid": false
+            },
+            {
+                "description": "extra properties with required present is valid",
+                "data": {"name": "Alice", "age": 30, "email": "alice@example.com"},
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "additionalProperties as false",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "properties": {
+                "name": { "type": "string" }
+            },
+            "additionalProperties": false
+        },
+        "tests": [
+            {
+                "description": "no additional properties is valid",
+                "data": {"name": "Alice"},
+                "valid": true
+            },
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            },
+            {
+                "description": "an additional property is not valid",
+                "data": {"name": "Alice", "extra": "value"},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "additionalProperties as a schema",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "properties": {
+                "name": { "type": "string" }
+            },
+            "additionalProperties": { "type": "string" }
+        },
+        "tests": [
+            {
+                "description": "additional string property is valid",
+                "data": {"name": "Alice", "extra": "value"},
+                "valid": true
+            },
+            {
+                "description": "additional integer property is not valid",
+                "data": {"name": "Alice", "extra": 123},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minProperties",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "minProperties": 2
+        },
+        "tests": [
+            {
+                "description": "object with 2 properties is valid",
+                "data": {"a": 1, "b": 2},
+                "valid": true
+            },
+            {
+                "description": "object with 3 properties is valid",
+                "data": {"a": 1, "b": 2, "c": 3},
+                "valid": true
+            },
+            {
+                "description": "object with 1 property is not valid",
+                "data": {"a": 1},
+                "valid": false
+            },
+            {
+                "description": "empty object is not valid",
+                "data": {},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "maxProperties",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "maxProperties": 2
+        },
+        "tests": [
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            },
+            {
+                "description": "object with 1 property is valid",
+                "data": {"a": 1},
+                "valid": true
+            },
+            {
+                "description": "object with 2 properties is valid",
+                "data": {"a": 1, "b": 2},
+                "valid": true
+            },
+            {
+                "description": "object with 3 properties is not valid",
+                "data": {"a": 1, "b": 2, "c": 3},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "patternProperties",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "patternProperties": {
+                "^S_": { "type": "string" },
+                "^I_": { "type": "integer" }
+            }
+        },
+        "tests": [
+            {
+                "description": "property matching string pattern is valid",
+                "data": {"S_foo": "bar"},
+                "valid": true
+            },
+            {
+                "description": "property matching integer pattern is valid",
+                "data": {"I_foo": 42},
+                "valid": true
+            },
+            {
+                "description": "both patterns match their types is valid",
+                "data": {"S_foo": "bar", "I_foo": 42},
+                "valid": true
+            },
+            {
+                "description": "property matching string pattern but has wrong type is not valid",
+                "data": {"S_foo": 123},
+                "valid": false
+            },
+            {
+                "description": "property not matching any pattern is valid",
+                "data": {"other": "anything"},
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "propertyNames",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.2/schema/2025-11-23",
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[a-z]+$"
+            }
+        },
+        "tests": [
+            {
+                "description": "lowercase property name is valid",
+                "data": {"foo": 1, "bar": 2},
+                "valid": true
+            },
+            {
+                "description": "uppercase property name is not valid",
+                "data": {"Foo": 1},
+                "valid": false
+            },
+            {
+                "description": "property name with digits is not valid",
+                "data": {"foo1": 1},
+                "valid": false
+            },
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            }
+        ]
+    }
+]

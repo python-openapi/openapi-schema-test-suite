@@ -1,0 +1,144 @@
+[
+    {
+        "description": "format is an annotation by default in OAS 3.1 base dialect",
+        "comment": "The OAS 3.1 base dialect uses format-annotation vocabulary, not format-assertion. Format keywords produce annotations but do not affect validation outcome.",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "email"
+        },
+        "tests": [
+            {
+                "description": "a valid email is valid",
+                "data": "foo@example.com",
+                "valid": true
+            },
+            {
+                "description": "an invalid email is valid because format is annotation-only",
+                "data": "not-an-email",
+                "valid": true
+            },
+            {
+                "description": "an empty string is valid because format is annotation-only",
+                "data": "",
+                "valid": true
+            },
+            {
+                "description": "an integer is not valid because type is still enforced",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "format date-time is annotation-only",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "date-time"
+        },
+        "tests": [
+            {
+                "description": "a valid date-time string is valid",
+                "data": "1963-06-19T08:30:06.283185307Z",
+                "valid": true
+            },
+            {
+                "description": "an invalid date-time string is valid because format is annotation-only",
+                "data": "not-a-date-time",
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "format date is annotation-only",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "date"
+        },
+        "tests": [
+            {
+                "description": "a valid date string is valid",
+                "data": "1963-06-19",
+                "valid": true
+            },
+            {
+                "description": "an invalid date string is valid because format is annotation-only",
+                "data": "not-a-date",
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "format uri is annotation-only",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "string",
+            "format": "uri"
+        },
+        "tests": [
+            {
+                "description": "a valid URI is valid",
+                "data": "http://example.com",
+                "valid": true
+            },
+            {
+                "description": "an invalid URI is valid because format is annotation-only",
+                "data": "//notauri",
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "format int32 is annotation-only",
+        "comment": "OpenAPI-specific format hints are annotations and do not restrict validation",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "integer",
+            "format": "int32"
+        },
+        "tests": [
+            {
+                "description": "a 32-bit integer value is valid",
+                "data": 2147483647,
+                "valid": true
+            },
+            {
+                "description": "a 64-bit integer value is valid because format is annotation-only",
+                "data": 9223372036854775807,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid because type is still enforced",
+                "data": "not-a-number",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "format float is annotation-only",
+        "schema": {
+            "$schema": "https://spec.openapis.org/oas/3.1/dialect/2024-11-10",
+            "type": "number",
+            "format": "float"
+        },
+        "tests": [
+            {
+                "description": "a float value is valid",
+                "data": 3.14,
+                "valid": true
+            },
+            {
+                "description": "an integer is valid as a number",
+                "data": 1,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid because type is still enforced",
+                "data": "not-a-number",
+                "valid": false
+            }
+        ]
+    }
+]
