@@ -1,0 +1,28 @@
+[
+    {
+        "description": "xml object structural validation",
+        "comment": "The xml keyword itself doesn't typically validate the instance JSON payload directly, but validators sometimes check the schema validity. Here we provide a valid xml schema object.",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "xml": {
+                        "name": "User",
+                        "namespace": "http://example.com/schema",
+                        "prefix": "ex",
+                        "attribute": false,
+                        "wrapped": true
+                    }
+                }
+            }
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": {"name": "Alice"},
+                "valid": true
+            }
+        ]
+    }
+]

@@ -1,0 +1,247 @@
+[
+    {
+        "description": "properties validation",
+        "schema": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "age": {
+                    "type": "integer"
+                }
+            }
+        },
+        "tests": [
+            {
+                "description": "both properties are valid",
+                "data": {
+                    "name": "Alice",
+                    "age": 30
+                },
+                "valid": true
+            },
+            {
+                "description": "one property is valid",
+                "data": {
+                    "name": "Alice"
+                },
+                "valid": true
+            },
+            {
+                "description": "extra properties are valid when additionalProperties not restricted",
+                "data": {
+                    "name": "Alice",
+                    "age": 30,
+                    "extra": true
+                },
+                "valid": true
+            },
+            {
+                "description": "wrong type for a property is not valid",
+                "data": {
+                    "name": 123
+                },
+                "valid": false
+            },
+            {
+                "description": "wrong type for age is not valid",
+                "data": {
+                    "name": "Alice",
+                    "age": "thirty"
+                },
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "required properties",
+        "schema": {
+            "type": "object",
+            "required": [
+                "name",
+                "age"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "age": {
+                    "type": "integer"
+                }
+            }
+        },
+        "tests": [
+            {
+                "description": "all required properties present is valid",
+                "data": {
+                    "name": "Alice",
+                    "age": 30
+                },
+                "valid": true
+            },
+            {
+                "description": "missing required property is not valid",
+                "data": {
+                    "name": "Alice"
+                },
+                "valid": false
+            },
+            {
+                "description": "missing both required properties is not valid",
+                "data": {},
+                "valid": false
+            },
+            {
+                "description": "extra properties with required present is valid",
+                "data": {
+                    "name": "Alice",
+                    "age": 30,
+                    "email": "alice@example.com"
+                },
+                "valid": true
+            }
+        ]
+    },
+    {
+        "description": "additionalProperties as false",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "tests": [
+            {
+                "description": "no additional properties is valid",
+                "data": {
+                    "name": "Alice"
+                },
+                "valid": true
+            },
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            },
+            {
+                "description": "an additional property is not valid",
+                "data": {
+                    "name": "Alice",
+                    "extra": "value"
+                },
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "additionalProperties as a schema",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "tests": [
+            {
+                "description": "additional string property is valid",
+                "data": {
+                    "name": "Alice",
+                    "extra": "value"
+                },
+                "valid": true
+            },
+            {
+                "description": "additional integer property is not valid",
+                "data": {
+                    "name": "Alice",
+                    "extra": 123
+                },
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minProperties",
+        "schema": {
+            "type": "object",
+            "minProperties": 2
+        },
+        "tests": [
+            {
+                "description": "object with 2 properties is valid",
+                "data": {
+                    "a": 1,
+                    "b": 2
+                },
+                "valid": true
+            },
+            {
+                "description": "object with 3 properties is valid",
+                "data": {
+                    "a": 1,
+                    "b": 2,
+                    "c": 3
+                },
+                "valid": true
+            },
+            {
+                "description": "object with 1 property is not valid",
+                "data": {
+                    "a": 1
+                },
+                "valid": false
+            },
+            {
+                "description": "empty object is not valid",
+                "data": {},
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "maxProperties",
+        "schema": {
+            "type": "object",
+            "maxProperties": 2
+        },
+        "tests": [
+            {
+                "description": "empty object is valid",
+                "data": {},
+                "valid": true
+            },
+            {
+                "description": "object with 1 property is valid",
+                "data": {
+                    "a": 1
+                },
+                "valid": true
+            },
+            {
+                "description": "object with 2 properties is valid",
+                "data": {
+                    "a": 1,
+                    "b": 2
+                },
+                "valid": true
+            },
+            {
+                "description": "object with 3 properties is not valid",
+                "data": {
+                    "a": 1,
+                    "b": 2,
+                    "c": 3
+                },
+                "valid": false
+            }
+        ]
+    }
+]
