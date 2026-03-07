@@ -1,0 +1,24 @@
+[
+    {
+        "description": "externalDocs property",
+        "schema": {
+            "type": "string",
+            "externalDocs": {
+                "description": "More info",
+                "url": "https://example.com"
+            }
+        },
+        "tests": [
+            {
+                "description": "externalDocs is merely an annotation, no validation effect by default",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "invalid types still fail",
+                "data": 123,
+                "valid": false
+            }
+        ]
+    }
+]

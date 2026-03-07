@@ -1,0 +1,34 @@
+[
+    {
+        "description": "writeOnly property",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "writeOnly": true
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "tests": [
+            {
+                "description": "writeOnly is merely an annotation, no validation effect by default",
+                "data": {
+                    "password": "secret",
+                    "name": "foo"
+                },
+                "valid": true
+            },
+            {
+                "description": "valid without writeOnly property",
+                "data": {
+                    "name": "foo"
+                },
+                "valid": true
+            }
+        ]
+    }
+]

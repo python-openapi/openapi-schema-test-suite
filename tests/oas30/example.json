@@ -1,0 +1,21 @@
+[
+    {
+        "description": "example property",
+        "schema": {
+            "type": "string",
+            "example": "example-value"
+        },
+        "tests": [
+            {
+                "description": "example is an annotation and doesn't affect validation",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "wrong type fails validation independently of example",
+                "data": 123,
+                "valid": false
+            }
+        ]
+    }
+]
