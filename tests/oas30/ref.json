@@ -2,12 +2,12 @@
     {
         "description": "$ref to $defs",
         "schema": {
-            "$defs": {
+            "$ref": "#/definitions/MyString",
+            "definitions": {
                 "MyString": {
                     "type": "string"
                 }
-            },
-            "$ref": "#/$defs/MyString"
+            }
         },
         "tests": [
             {
@@ -25,7 +25,19 @@
     {
         "description": "property using $ref",
         "schema": {
-            "$defs": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/Address"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "definitions": {
                 "Address": {
                     "type": "object",
                     "properties": {
@@ -41,19 +53,7 @@
                         "city"
                     ]
                 }
-            },
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "address": {
-                    "$ref": "#/$defs/Address"
-                }
-            },
-            "required": [
-                "name"
-            ]
+            }
         },
         "tests": [
             {
@@ -97,7 +97,8 @@
     {
         "description": "recursive $ref using $defs",
         "schema": {
-            "$defs": {
+            "$ref": "#/definitions/Node",
+            "definitions": {
                 "Node": {
                     "type": "object",
                     "properties": {
@@ -107,7 +108,7 @@
                         "children": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/$defs/Node"
+                                "$ref": "#/definitions/Node"
                             }
                         }
                     },
@@ -115,8 +116,7 @@
                         "value"
                     ]
                 }
-            },
-            "$ref": "#/$defs/Node"
+            }
         },
         "tests": [
             {
@@ -182,22 +182,9 @@
     {
         "description": "$ref in allOf",
         "schema": {
-            "$defs": {
-                "BaseObject": {
-                    "type": "object",
-                    "properties": {
-                        "id": {
-                            "type": "integer"
-                        }
-                    },
-                    "required": [
-                        "id"
-                    ]
-                }
-            },
             "allOf": [
                 {
-                    "$ref": "#/$defs/BaseObject"
+                    "$ref": "#/definitions/BaseObject"
                 },
                 {
                     "type": "object",
@@ -210,7 +197,20 @@
                         "name"
                     ]
                 }
-            ]
+            ],
+            "definitions": {
+                "BaseObject": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ]
+                }
+            }
         },
         "tests": [
             {
@@ -241,13 +241,13 @@
         "description": "$ref sibling keywords are ignored",
         "comment": "In JSON Schema Draft 4 and OAS 3.0, $ref precludes sibling keywords, so they should be ignored.",
         "schema": {
-            "$defs": {
+            "$ref": "#/definitions/StringType",
+            "minLength": 3,
+            "definitions": {
                 "StringType": {
                     "type": "string"
                 }
-            },
-            "$ref": "#/$defs/StringType",
-            "minLength": 3
+            }
         },
         "tests": [
             {

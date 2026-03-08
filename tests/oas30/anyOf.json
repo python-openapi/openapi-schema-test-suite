@@ -35,36 +35,6 @@
         ]
     },
     {
-        "description": "anyOf with string or null",
-        "schema": {
-            "anyOf": [
-                {
-                    "type": "string"
-                },
-                {
-                    "type": "null"
-                }
-            ]
-        },
-        "tests": [
-            {
-                "description": "a string is valid",
-                "data": "foo",
-                "valid": true
-            },
-            {
-                "description": "null is valid",
-                "data": null,
-                "valid": true
-            },
-            {
-                "description": "an integer is not valid",
-                "data": 1,
-                "valid": false
-            }
-        ]
-    },
-    {
         "description": "anyOf with base schema",
         "schema": {
             "type": "string",

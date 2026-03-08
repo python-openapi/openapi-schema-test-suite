@@ -113,7 +113,9 @@
                     "type": "object",
                     "properties": {
                         "type": {
-                            "const": "cat"
+                            "enum": [
+                                "cat"
+                            ]
                         },
                         "meow": {
                             "type": "string"
@@ -128,7 +130,9 @@
                     "type": "object",
                     "properties": {
                         "type": {
-                            "const": "dog"
+                            "enum": [
+                                "dog"
+                            ]
                         },
                         "bark": {
                             "type": "string"

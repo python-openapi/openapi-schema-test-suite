@@ -109,9 +109,13 @@
         "description": "not multiple types",
         "schema": {
             "not": {
-                "type": [
-                    "integer",
-                    "boolean"
+                "anyOf": [
+                    {
+                        "type": "integer"
+                    },
+                    {
+                        "type": "boolean"
+                    }
                 ]
             }
         },
