@@ -1,0 +1,158 @@
+[
+    {
+        "description": "minLength validation",
+        "schema": {
+            "minLength": 2
+        },
+        "tests": [
+            {
+                "description": "a string with length equal to minLength is valid",
+                "data": "fo",
+                "valid": true
+            },
+            {
+                "description": "a longer string is valid",
+                "data": "foobar",
+                "valid": true
+            },
+            {
+                "description": "a shorter string is not valid",
+                "data": "f",
+                "valid": false
+            },
+            {
+                "description": "an empty string is not valid",
+                "data": "",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "maxLength validation",
+        "schema": {
+            "maxLength": 2
+        },
+        "tests": [
+            {
+                "description": "an empty string is valid",
+                "data": "",
+                "valid": true
+            },
+            {
+                "description": "a string with length equal to maxLength is valid",
+                "data": "fo",
+                "valid": true
+            },
+            {
+                "description": "a longer string is not valid",
+                "data": "foo",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "pattern validation",
+        "schema": {
+            "pattern": "^[a-z]+$"
+        },
+        "tests": [
+            {
+                "description": "a lowercase string is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "a string with uppercase is not valid",
+                "data": "Foo",
+                "valid": false
+            },
+            {
+                "description": "a string with digits is not valid",
+                "data": "foo1",
+                "valid": false
+            },
+            {
+                "description": "an empty string is not valid",
+                "data": "",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "pattern with partial match",
+        "comment": "pattern matches if the pattern is found anywhere in the string",
+        "schema": {
+            "pattern": "\\d+"
+        },
+        "tests": [
+            {
+                "description": "a string containing digits is valid",
+                "data": "abc123",
+                "valid": true
+            },
+            {
+                "description": "a string of only digits is valid",
+                "data": "123",
+                "valid": true
+            },
+            {
+                "description": "a string without digits is not valid",
+                "data": "abc",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minLength and maxLength",
+        "schema": {
+            "minLength": 2,
+            "maxLength": 5
+        },
+        "tests": [
+            {
+                "description": "string of length 2 is valid",
+                "data": "ab",
+                "valid": true
+            },
+            {
+                "description": "string of length 5 is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "string of length 3 is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "string of length 1 is not valid",
+                "data": "a",
+                "valid": false
+            },
+            {
+                "description": "string of length 6 is not valid",
+                "data": "toolong",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minLength with unicode characters",
+        "comment": "minLength counts Unicode code points, not bytes",
+        "schema": {
+            "minLength": 2
+        },
+        "tests": [
+            {
+                "description": "two unicode code points is valid",
+                "data": "AB",
+                "valid": true
+            },
+            {
+                "description": "one unicode code point is not valid",
+                "data": "A",
+                "valid": false
+            }
+        ]
+    }
+]

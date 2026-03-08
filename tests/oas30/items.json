@@ -1,0 +1,186 @@
+[
+    {
+        "description": "items validation",
+        "schema": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        },
+        "tests": [
+            {
+                "description": "array of integers is valid",
+                "data": [
+                    1,
+                    2,
+                    3
+                ],
+                "valid": true
+            },
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "array with a string is not valid",
+                "data": [
+                    1,
+                    "foo",
+                    3
+                ],
+                "valid": false
+            },
+            {
+                "description": "array with null is not valid",
+                "data": [
+                    1,
+                    null,
+                    3
+                ],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minItems",
+        "schema": {
+            "type": "array",
+            "minItems": 2
+        },
+        "tests": [
+            {
+                "description": "array with 2 items is valid",
+                "data": [
+                    1,
+                    2
+                ],
+                "valid": true
+            },
+            {
+                "description": "array with 3 items is valid",
+                "data": [
+                    1,
+                    2,
+                    3
+                ],
+                "valid": true
+            },
+            {
+                "description": "array with 1 item is not valid",
+                "data": [
+                    1
+                ],
+                "valid": false
+            },
+            {
+                "description": "empty array is not valid",
+                "data": [],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "maxItems",
+        "schema": {
+            "type": "array",
+            "maxItems": 2
+        },
+        "tests": [
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "array with 1 item is valid",
+                "data": [
+                    1
+                ],
+                "valid": true
+            },
+            {
+                "description": "array with 2 items is valid",
+                "data": [
+                    1,
+                    2
+                ],
+                "valid": true
+            },
+            {
+                "description": "array with 3 items is not valid",
+                "data": [
+                    1,
+                    2,
+                    3
+                ],
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "uniqueItems",
+        "schema": {
+            "type": "array",
+            "uniqueItems": true
+        },
+        "tests": [
+            {
+                "description": "array with unique items is valid",
+                "data": [
+                    1,
+                    2,
+                    3
+                ],
+                "valid": true
+            },
+            {
+                "description": "empty array is valid",
+                "data": [],
+                "valid": true
+            },
+            {
+                "description": "array with duplicate items is not valid",
+                "data": [
+                    1,
+                    2,
+                    1
+                ],
+                "valid": false
+            },
+            {
+                "description": "array with duplicate strings is not valid",
+                "data": [
+                    "foo",
+                    "bar",
+                    "foo"
+                ],
+                "valid": false
+            },
+            {
+                "description": "array with duplicate objects is not valid",
+                "data": [
+                    {
+                        "a": 1
+                    },
+                    {
+                        "a": 1
+                    }
+                ],
+                "valid": false
+            },
+            {
+                "description": "array with non-duplicate objects is valid",
+                "data": [
+                    {
+                        "a": 1
+                    },
+                    {
+                        "a": 2
+                    }
+                ],
+                "valid": true
+            }
+        ]
+    }
+]

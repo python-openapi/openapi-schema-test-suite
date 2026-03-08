@@ -9,6 +9,7 @@ It is meant to be language agnostic and should require only a JSON parser. The c
 
 This suite covers the following OpenAPI Schema Object dialects:
 
+- **OAS 3.0**: Highly customized subset/superset of JSON Schema Draft 4
 - **OAS 3.1**: [`https://spec.openapis.org/oas/3.1/dialect/2024-11-10`](https://spec.openapis.org/oas/3.1/dialect/2024-11-10) (also compatible with [`https://spec.openapis.org/oas/3.1/dialect/base`](https://spec.openapis.org/oas/3.1/dialect/base))
 - **OAS 3.2**: [`https://spec.openapis.org/oas/3.2/schema/2025-11-23`](https://spec.openapis.org/oas/3.2/schema/2025-11-23)
 
@@ -16,6 +17,7 @@ This suite covers the following OpenAPI Schema Object dialects:
 
 The tests in this suite are contained in the `tests` directory at the root of this repository. Inside that directory is a subdirectory for each supported version of the OpenAPI specification:
 
+- `tests/oas30/` — Tests for the OpenAPI 3.0 Schema Object dialect
 - `tests/oas31/` — Tests for the OpenAPI 3.1 Schema Object dialect
 - `tests/oas32/` — Tests for the OpenAPI 3.2 Schema Object dialect
 

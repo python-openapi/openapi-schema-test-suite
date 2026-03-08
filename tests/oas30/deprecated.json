@@ -1,0 +1,21 @@
+[
+    {
+        "description": "deprecated property",
+        "schema": {
+            "type": "string",
+            "deprecated": true
+        },
+        "tests": [
+            {
+                "description": "deprecated is merely an annotation, no validation effect by default",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "invalid types still fail",
+                "data": 123,
+                "valid": false
+            }
+        ]
+    }
+]

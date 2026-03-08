@@ -1,0 +1,219 @@
+[
+    {
+        "description": "minimum validation",
+        "schema": {
+            "minimum": 1.1
+        },
+        "tests": [
+            {
+                "description": "a value equal to minimum is valid",
+                "data": 1.1,
+                "valid": true
+            },
+            {
+                "description": "a value greater than minimum is valid",
+                "data": 2.6,
+                "valid": true
+            },
+            {
+                "description": "a value less than minimum is not valid",
+                "data": 0.6,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "maximum validation",
+        "schema": {
+            "maximum": 3.0
+        },
+        "tests": [
+            {
+                "description": "a value less than maximum is valid",
+                "data": 2.6,
+                "valid": true
+            },
+            {
+                "description": "a value equal to maximum is valid",
+                "data": 3.0,
+                "valid": true
+            },
+            {
+                "description": "a value greater than maximum is not valid",
+                "data": 3.5,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "exclusiveMinimum validation (OAS 3.0 / Draft 4 syntax)",
+        "comment": "In OAS 3.1 (JSON Schema 2020-12), exclusiveMinimum is a number, not a boolean",
+        "schema": {
+            "exclusiveMinimum": true,
+            "minimum": 1.1
+        },
+        "tests": [
+            {
+                "description": "a value greater than exclusiveMinimum is valid",
+                "data": 1.2,
+                "valid": true
+            },
+            {
+                "description": "a value equal to exclusiveMinimum is not valid",
+                "data": 1.1,
+                "valid": false
+            },
+            {
+                "description": "a value less than exclusiveMinimum is not valid",
+                "data": 0.6,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "exclusiveMaximum validation (OAS 3.0 / Draft 4 syntax)",
+        "comment": "In OAS 3.1 (JSON Schema 2020-12), exclusiveMaximum is a number, not a boolean",
+        "schema": {
+            "exclusiveMaximum": true,
+            "maximum": 3.0
+        },
+        "tests": [
+            {
+                "description": "a value less than exclusiveMaximum is valid",
+                "data": 2.2,
+                "valid": true
+            },
+            {
+                "description": "a value equal to exclusiveMaximum is not valid",
+                "data": 3.0,
+                "valid": false
+            },
+            {
+                "description": "a value greater than exclusiveMaximum is not valid",
+                "data": 3.5,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "multipleOf validation",
+        "schema": {
+            "multipleOf": 2
+        },
+        "tests": [
+            {
+                "description": "an integer multiple of 2 is valid",
+                "data": 10,
+                "valid": true
+            },
+            {
+                "description": "0 is a multiple of 2",
+                "data": 0,
+                "valid": true
+            },
+            {
+                "description": "an integer not multiple of 2 is not valid",
+                "data": 7,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "multipleOf with float divisor",
+        "schema": {
+            "multipleOf": 1.5
+        },
+        "tests": [
+            {
+                "description": "0 is valid",
+                "data": 0,
+                "valid": true
+            },
+            {
+                "description": "1.5 is valid",
+                "data": 1.5,
+                "valid": true
+            },
+            {
+                "description": "3 is valid",
+                "data": 3,
+                "valid": true
+            },
+            {
+                "description": "35 is not valid",
+                "data": 35,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "minimum and maximum",
+        "schema": {
+            "minimum": 0,
+            "maximum": 100
+        },
+        "tests": [
+            {
+                "description": "a value at minimum is valid",
+                "data": 0,
+                "valid": true
+            },
+            {
+                "description": "a value at maximum is valid",
+                "data": 100,
+                "valid": true
+            },
+            {
+                "description": "a value in range is valid",
+                "data": 50,
+                "valid": true
+            },
+            {
+                "description": "a value below minimum is not valid",
+                "data": -1,
+                "valid": false
+            },
+            {
+                "description": "a value above maximum is not valid",
+                "data": 101,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "exclusiveMinimum and exclusiveMaximum (OAS 3.0 / Draft 4 syntax)",
+        "schema": {
+            "exclusiveMinimum": true,
+            "exclusiveMaximum": true,
+            "minimum": 0,
+            "maximum": 100
+        },
+        "tests": [
+            {
+                "description": "a value in range is valid",
+                "data": 50,
+                "valid": true
+            },
+            {
+                "description": "a value at exclusiveMinimum is not valid",
+                "data": 0,
+                "valid": false
+            },
+            {
+                "description": "a value at exclusiveMaximum is not valid",
+                "data": 100,
+                "valid": false
+            },
+            {
+                "description": "a value below exclusiveMinimum is not valid",
+                "data": -1,
+                "valid": false
+            },
+            {
+                "description": "a value above exclusiveMaximum is not valid",
+                "data": 101,
+                "valid": false
+            }
+        ]
+    }
+]

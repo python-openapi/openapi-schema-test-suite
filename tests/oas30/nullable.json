@@ -1,0 +1,70 @@
+[
+    {
+        "description": "nullable string using nullable keyword",
+        "comment": "In OAS 3.0, nullable types use the 'nullable' keyword",
+        "schema": {
+            "type": "string",
+            "nullable": true
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "nullable integer using nullable keyword",
+        "schema": {
+            "type": "integer",
+            "nullable": true
+        },
+        "tests": [
+            {
+                "description": "an integer is valid",
+                "data": 42,
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "a string is not valid",
+                "data": "foo",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "non-nullable string type does not accept null",
+        "schema": {
+            "type": "string",
+            "nullable": false
+        },
+        "tests": [
+            {
+                "description": "a string is valid",
+                "data": "hello",
+                "valid": true
+            },
+            {
+                "description": "null is not valid",
+                "data": null,
+                "valid": false
+            }
+        ]
+    }
+]

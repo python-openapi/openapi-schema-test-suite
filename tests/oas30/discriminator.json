@@ -1,0 +1,183 @@
+[
+    {
+        "description": "discriminator as annotation",
+        "comment": "The discriminator keyword in OAS 3.0 is an annotation that assists with schema selection in polymorphic scenarios. Validation is still performed by oneOf/anyOf/allOf.",
+        "schema": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "petType": {
+                            "enum": [
+                                "cat"
+                            ]
+                        },
+                        "meow": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "petType",
+                        "meow"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "petType": {
+                            "enum": [
+                                "dog"
+                            ]
+                        },
+                        "bark": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "petType",
+                        "bark"
+                    ]
+                }
+            ],
+            "discriminator": {
+                "propertyName": "petType"
+            }
+        },
+        "tests": [
+            {
+                "description": "a cat object is valid",
+                "data": {
+                    "petType": "cat",
+                    "meow": "purr"
+                },
+                "valid": true
+            },
+            {
+                "description": "a dog object is valid",
+                "data": {
+                    "petType": "dog",
+                    "bark": "woof"
+                },
+                "valid": true
+            },
+            {
+                "description": "unknown petType is not valid",
+                "data": {
+                    "petType": "bird",
+                    "chirp": "tweet"
+                },
+                "valid": false
+            },
+            {
+                "description": "missing discriminator property is not valid",
+                "data": {
+                    "meow": "purr"
+                },
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "discriminator with mapping",
+        "schema": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "vehicleType": {
+                            "enum": [
+                                "car"
+                            ]
+                        },
+                        "doors": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "vehicleType",
+                        "doors"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "vehicleType": {
+                            "enum": [
+                                "truck"
+                            ]
+                        },
+                        "payload": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "vehicleType",
+                        "payload"
+                    ]
+                }
+            ],
+            "discriminator": {
+                "propertyName": "vehicleType",
+                "mapping": {
+                    "car": "#/components/schemas/Car",
+                    "truck": "#/components/schemas/Truck"
+                }
+            }
+        },
+        "tests": [
+            {
+                "description": "a car object is valid",
+                "data": {
+                    "vehicleType": "car",
+                    "doors": 4
+                },
+                "valid": true
+            },
+            {
+                "description": "a truck object is valid",
+                "data": {
+                    "vehicleType": "truck",
+                    "payload": 5.5
+                },
+                "valid": true
+            },
+            {
+                "description": "unknown vehicle type is not valid",
+                "data": {
+                    "vehicleType": "bus",
+                    "seats": 50
+                },
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "discriminator keyword does not affect basic type validation",
+        "comment": "Validation is still governed by the JSON Schema keywords; discriminator is just an annotation",
+        "schema": {
+            "type": "object",
+            "discriminator": {
+                "propertyName": "kind"
+            }
+        },
+        "tests": [
+            {
+                "description": "an object without the discriminator property is still valid per type constraint",
+                "data": {
+                    "name": "foo"
+                },
+                "valid": true
+            },
+            {
+                "description": "null is not valid because type is object",
+                "data": null,
+                "valid": false
+            },
+            {
+                "description": "a string is not valid because type is object",
+                "data": "foo",
+                "valid": false
+            }
+        ]
+    }
+]

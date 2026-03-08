@@ -1,0 +1,105 @@
+[
+    {
+        "description": "enum validation",
+        "schema": {
+            "enum": [
+                "foo",
+                "bar"
+            ]
+        },
+        "tests": [
+            {
+                "description": "'foo' is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "'bar' is valid",
+                "data": "bar",
+                "valid": true
+            },
+            {
+                "description": "'baz' is not valid",
+                "data": "baz",
+                "valid": false
+            },
+            {
+                "description": "an integer is not valid",
+                "data": 1,
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "enum with mixed types",
+        "schema": {
+            "enum": [
+                1,
+                2,
+                3,
+                "foo",
+                null
+            ]
+        },
+        "tests": [
+            {
+                "description": "1 is valid",
+                "data": 1,
+                "valid": true
+            },
+            {
+                "description": "'foo' is valid",
+                "data": "foo",
+                "valid": true
+            },
+            {
+                "description": "null is valid",
+                "data": null,
+                "valid": true
+            },
+            {
+                "description": "5 is not valid",
+                "data": 5,
+                "valid": false
+            },
+            {
+                "description": "'bar' is not valid",
+                "data": "bar",
+                "valid": false
+            }
+        ]
+    },
+    {
+        "description": "enum with type constraint",
+        "schema": {
+            "type": "string",
+            "enum": [
+                "active",
+                "inactive",
+                "pending"
+            ]
+        },
+        "tests": [
+            {
+                "description": "'active' is valid",
+                "data": "active",
+                "valid": true
+            },
+            {
+                "description": "'inactive' is valid",
+                "data": "inactive",
+                "valid": true
+            },
+            {
+                "description": "'pending' is valid",
+                "data": "pending",
+                "valid": true
+            },
+            {
+                "description": "'unknown' is not valid",
+                "data": "unknown",
+                "valid": false
+            }
+        ]
+    }
+]

@@ -1,0 +1,34 @@
+[
+    {
+        "description": "readOnly property",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "tests": [
+            {
+                "description": "readOnly is merely an annotation, no validation effect by default",
+                "data": {
+                    "id": 123,
+                    "name": "foo"
+                },
+                "valid": true
+            },
+            {
+                "description": "valid without readOnly property",
+                "data": {
+                    "name": "foo"
+                },
+                "valid": true
+            }
+        ]
+    }
+]
